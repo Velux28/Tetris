@@ -1,0 +1,6 @@
+Aggiungere Suoni
+Aggiungere Score, metterlo a schermo
+Refactoring del codice (Anche su più File), ordinare meglio il codice
+FACOLTATIVO
+ 
+Aggiungere Blink alla linea [Se npn ricordo male]
