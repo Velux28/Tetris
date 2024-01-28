@@ -5,6 +5,12 @@
 #include "CheckCollision.c"
 #include "TetrisPiece.c"
 
+/*
+mettere lo score a schermo
+mettere la musuca con la libreria di raylib
+aumento velocità con lo score
+*/
+
 const Color colorTypes[8] =
 {
     {255,255,85,255},
@@ -37,6 +43,8 @@ void DrawStage(int startOffsetX, int startOffsetY);
 
 void UpdateScore();
 
+void CloseWindow();
+
 int main(int argc, char** argv, char** environ)
 {
     const int windowWidth = 600; 
@@ -50,6 +58,11 @@ int main(int argc, char** argv, char** environ)
 
     int currentTetrominoX = tetrominoStartX;
     int currentTetrominoY = tetrominoStartY;
+
+    InitAudioDevice();
+    Music bgMusic = LoadMusicStream("TetrisBGMusic.mp3");
+    //PlaySound(bgMusic);
+    PlayMusicStream(bgMusic);
 
 
     time_t unixTime;
@@ -89,6 +102,7 @@ int main(int argc, char** argv, char** environ)
         currentRotation = RotateTetromino(currentRotation, currentTetrominoX, currentTetrominoY, currentTetrominoType);
         
         currentTetrominoX = MoveTetromino(currentTetrominoX, currentTetrominoY, currentTetrominoType, currentRotation);
+        UpdateMusicStream(bgMusic);
 
         if(timeToMoveTetrominoDown <= 0 || IsKeyPressed(KEY_DOWN))
         {            
@@ -136,6 +150,8 @@ int main(int argc, char** argv, char** environ)
         ClearBackground(RED);
 
         DrawStage(startOffsetX, startOffsetY);
+
+        DrawText(TextFormat("Score: %08i", (int)currScore), 50, 20, 20, BLACK);
         
         drawTetromino(colorTypes[currentColor],startOffsetX, startOffsetY, currentTetrominoX, currentTetrominoY, tetrominoTypes[currentTetrominoType][currentRotation]);
 
@@ -176,6 +192,10 @@ void drawTetromino(const Color currentColor, const int startOffsetX, const int s
             if(tetromino[offset] == 1)
             {
                 DrawRectangle((x + tetrominoStartX) * TILE_SIZE + startOffsetX, (y + tetrominoStartY) * TILE_SIZE + startOffsetY, TILE_SIZE, TILE_SIZE, currentColor);
+                if(CheckCollision(tetrominoStartX, tetrominoStartY, tetromino ))
+                {
+                    CloseWindow();
+                }
             }
         }
     }
@@ -320,4 +340,9 @@ void UpdateScore()
     scoreMultipier += (currScore) * .01f;
     currScore = currScore + scoreMultipier * rowValue;
     TraceLog(LOG_INFO, "score %d %f", (int)currScore, scoreMultipier);
+}
+
+void CloseWindow()
+{
+    CloseWindow();
 }
