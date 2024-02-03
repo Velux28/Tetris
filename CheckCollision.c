@@ -8,7 +8,7 @@ int CheckCollision(const int tetrominoStartX, const int tetrominoStartY, const i
     {
         for(int x = 0; x < TETROMINO_SIZE; x++)
         {
-            const int offset = y * TETROMINO_SIZE + x;
+            const int offset = y * TETROMINO_SIE + x;
 
             if(tetromino[offset] == 1)
             {
